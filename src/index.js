@@ -16,9 +16,13 @@ class App extends Component {
             selectedVideo: null
         };
 
+        this.youtubeSearch('surfboards');
+    }
+
+    youtubeSearch(team){
         YTSearch({
             key: YOUTUBE_API_KEY,
-            term: 'surfboards'
+            term: (team == "") ? "surfboards" : team
         }, (videos) => {
             this.setState({
                 videos: videos,
@@ -36,7 +40,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <SearchBar />
+                <SearchBar searchOnType={this.youtubeSearch.bind(this)}/>
                 <VideoDetail video={this.state.selectedVideo}/>
                 <VideoList onSelectVideo={this.selectedVideo} videos={this.state.videos}/>
             </div>
