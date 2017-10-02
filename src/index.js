@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import ReactDOM from 'react-dom';
 import YTSearch from 'youtube-api-search';
 import SearchBar from './components/search_bar';
@@ -19,7 +20,7 @@ class App extends Component {
         this.youtubeSearch('surfboards');
     }
 
-    youtubeSearch(team){
+    youtubeSearch(team) {
         YTSearch({
             key: YOUTUBE_API_KEY,
             term: (team == "") ? "surfboards" : team
@@ -38,9 +39,12 @@ class App extends Component {
     }
 
     render() {
+
+        const searchVideo = _.debounce(this.youtubeSearch.bind(this), 400);
+
         return (
             <div>
-                <SearchBar searchOnType={this.youtubeSearch.bind(this)}/>
+                <SearchBar searchOnType={searchVideo}/>
                 <VideoDetail video={this.state.selectedVideo}/>
                 <VideoList onSelectVideo={this.selectedVideo} videos={this.state.videos}/>
             </div>
